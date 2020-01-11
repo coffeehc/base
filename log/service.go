@@ -4,6 +4,7 @@ import (
 	"os"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/fsnotify/fsnotify"
@@ -59,6 +60,7 @@ func InitLogger(force bool) {
 				EnableColor:   true,
 			})
 		}
+
 		//  初始化本地化的日志
 		encodeConfig := newEncodeConfig()
 		encodeConfig.EncodeLevel = zapcore.LowercaseColorLevelEncoder
@@ -129,13 +131,18 @@ func InitLogger(force bool) {
 		}
 		logCores = append(logCores, core)
 	}
-
 	rootLogger = zap.New(zapcore.NewTee(logCores...), zap.AddStacktrace(zapcore.DPanicLevel), zap.AddCaller())
 	resetLoggers()
 	zap.ReplaceGlobals(rootLogger)
 }
 
+var watching = int64(0)
+
 func WatchLevel() {
+	ok := atomic.CompareAndSwapInt64(&watching, 0, 1)
+	if !ok {
+		return
+	}
 	viper.WatchConfig()
 	viper.WatchRemoteConfig()
 	viper.OnConfigChange(func(in fsnotify.Event) {
