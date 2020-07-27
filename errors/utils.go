@@ -2,8 +2,9 @@ package errors
 
 import (
 	"fmt"
-	"github.com/json-iterator/go"
 	"strings"
+
+	"github.com/json-iterator/go"
 
 	"go.uber.org/zap"
 )
