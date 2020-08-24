@@ -6,6 +6,7 @@ func BuildError(errorCode int64, message string) Error {
 		Message: message,
 	}
 }
+
 func SystemError(message string) Error {
 	return BuildError(ErrorSystem, message)
 }
