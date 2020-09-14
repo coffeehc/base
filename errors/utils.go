@@ -2,8 +2,9 @@ package errors
 
 import (
 	"fmt"
-	"github.com/json-iterator/go"
 	"strings"
+
+	"github.com/json-iterator/go"
 
 	"go.uber.org/zap"
 )
@@ -33,6 +34,9 @@ func ParseError(jsonStr string) Error {
 }
 
 func ConverUnknowError(err interface{}) Error {
+	if err == nil {
+		return nil
+	}
 	if e, ok := err.(error); ok {
 		return ConverError(e)
 	}
@@ -40,6 +44,9 @@ func ConverUnknowError(err interface{}) Error {
 }
 
 func ConverError(err error) Error {
+	if err == nil {
+		return nil
+	}
 	if IsBaseError(err) {
 		return err.(Error)
 	}

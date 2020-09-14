@@ -22,9 +22,15 @@ func WrappedError(errorCode int64, err error) Error {
 }
 
 func WrappedSystemError(err error) Error {
+	if err == nil {
+		return nil
+	}
 	return WrappedError(ErrorSystem, err)
 }
 
 func WrappedMessageError(err error) Error {
+	if err == nil {
+		return nil
+	}
 	return WrappedError(ErrorMessage, err)
 }
