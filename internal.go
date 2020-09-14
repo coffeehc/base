@@ -1,9 +1,10 @@
 package base
 
 import (
+	"log"
+
 	"git.xiagaogao.com/coffee/base/errors"
 	"git.xiagaogao.com/coffee/base/utils"
-	"log"
 )
 
 var _ errors.Error

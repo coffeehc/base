@@ -12,12 +12,17 @@ type Error interface {
 	GetFields(fields ...zap.Field) []zap.Field
 	GetFieldsWithCause(fields ...zap.Field) []zap.Field
 	FormatRPCError() string
+	Is(Error) bool
 }
 
 // BaseError Error 接口的实现,可 json 序列化
 type baseError struct {
 	Code    int64  `json:"code"`
 	Message string `json:"msg"`
+}
+
+func (err *baseError) Is(err2 Error) bool {
+	return err.Code == err2.GetCode()
 }
 
 func (err *baseError) FormatRPCError() string {
