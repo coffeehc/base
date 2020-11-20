@@ -42,22 +42,22 @@ func newService() Service {
 		EnableSampler: true,
 	}
 	viper.SetDefault("logger", defaultConfig)
-	// logFileWrite := &lumberjack.Logger{
-	//   Filename:   defaultConfig.FileConfig.FileName,
-	//   LocalTime:  true,
-	//   MaxSize:    defaultConfig.FileConfig.Maxsize,    // megabytes
-	//   MaxBackups: defaultConfig.FileConfig.MaxBackups, // 最多保留3个备份
-	//   MaxAge:     defaultConfig.FileConfig.MaxAge,     // days
-	//   Compress:   defaultConfig.FileConfig.Compress,   // 是否压缩 disabled by default
-	// }
+	logFileWrite := &lumberjack.Logger{
+		Filename:   defaultConfig.FileConfig.FileName,
+		LocalTime:  true,
+		MaxSize:    defaultConfig.FileConfig.Maxsize,    // megabytes
+		MaxBackups: defaultConfig.FileConfig.MaxBackups, // 最多保留3个备份
+		MaxAge:     defaultConfig.FileConfig.MaxAge,     // days
+		Compress:   defaultConfig.FileConfig.Compress,   // 是否压缩 disabled by default
+	}
 	encodeConfig := newEncodeConfig()
 	core := zapcore.NewCore(zapcore.NewConsoleEncoder(encodeConfig), zapcore.AddSync(os.Stdout), zap.InfoLevel)
 	rootLogger := zap.New(zapcore.NewTee(core), zap.AddStacktrace(zapcore.DPanicLevel), zap.AddCaller())
 	impl := &serviceImpl{
-		level: zap.NewAtomicLevel(),
-		// logFileWrite: logFileWrite,
-		rootLogger: rootLogger,
-		conf:       defaultConfig,
+		level:        zap.NewAtomicLevel(),
+		logFileWrite: logFileWrite,
+		rootLogger:   rootLogger,
+		conf:         defaultConfig,
 	}
 	impl.LoadConfig()
 	impl.ResetLogger()
@@ -115,21 +115,21 @@ func (impl *serviceImpl) LoadConfig() {
 	logCores := make([]zapcore.Core, 0)
 	fileLogConfig := conf.FileConfig
 	if fileLogConfig.Enable {
-		if fileLogConfig.FileName == "" {
-			impl.rootLogger.Warn("没有指定日志目录,使用默认路径")
-			fileLogConfig.FileName = "./logs/service.log"
+		if fileLogConfig.FileName != "" {
+			impl.logFileWrite.Filename = fileLogConfig.FileName
 		}
-		if fileLogConfig.MaxAge == 0 {
-			fileLogConfig.MaxAge = 5
+		if fileLogConfig.MaxAge > 0 {
+			impl.logFileWrite.MaxAge = fileLogConfig.MaxAge
 		}
-		if fileLogConfig.Maxsize == 0 {
-			fileLogConfig.Maxsize = 50
+		if fileLogConfig.MaxBackups > 0 {
+			impl.logFileWrite.MaxBackups = fileLogConfig.MaxBackups
 		}
-		impl.logFileWrite.Filename = fileLogConfig.FileName
-		impl.logFileWrite.MaxAge = fileLogConfig.MaxAge
-		impl.logFileWrite.MaxBackups = fileLogConfig.MaxBackups
-		impl.logFileWrite.MaxSize = fileLogConfig.Maxsize
-		impl.logFileWrite.Compress = fileLogConfig.Compress
+		if fileLogConfig.Maxsize > 0 {
+			impl.logFileWrite.MaxSize = fileLogConfig.Maxsize
+		}
+		if fileLogConfig.Compress != impl.logFileWrite.Compress {
+			impl.logFileWrite.Compress = fileLogConfig.Compress
+		}
 		impl.logFileWrite.Rotate()
 		core := zapcore.NewCore(zapcore.NewJSONEncoder(newEncodeConfig()), zapcore.AddSync(impl.logFileWrite), impl.level)
 		if conf.EnableSampler {

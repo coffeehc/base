@@ -19,11 +19,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fa5abe78-f07f-48bf-a5db-ce5dfbc0d297" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/log/impl.go" afterDir="false" />
+    <list default="true" id="fa5abe78-f07f-48bf-a5db-ce5dfbc0d297" name="Default Changelist" comment="2020-11-19 v1">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/service.go" beforeDir="false" afterPath="$PROJECT_DIR$/log/service.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/utils.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/impl.go" beforeDir="false" afterPath="$PROJECT_DIR$/log/impl.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +55,6 @@
   </component>
   <component name="PropertiesComponent">
     <property name="DefaultGoTemplateProperty" value="Go File" />
-    <property name="GO_FMT" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -89,7 +86,14 @@
       <option name="project" value="LOCAL" />
       <updated>1600070137858</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="2020-11-19 v1">
+      <created>1605776622743</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1605776622743</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -105,13 +109,15 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="init" />
     <MESSAGE value="2020-09-14 v1" />
-    <option name="LAST_COMMIT_MESSAGE" value="2020-09-14 v1" />
+    <MESSAGE value="2020-11-19 v1" />
+    <option name="LAST_COMMIT_MESSAGE" value="2020-11-19 v1" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
@@ -127,13 +133,9 @@
       <screen x="0" y="0" width="1920" height="1200" />
     </state>
     <state x="406" y="162" key="CommitChangelistDialog2/0.0.1920.1200@0.0.1920.1200" timestamp="1600070137731" />
-    <state x="560" y="340" key="Vcs.Push.Dialog.v2" timestamp="1600070139298">
+    <state x="560" y="340" key="Vcs.Push.Dialog.v2" timestamp="1605776624893">
       <screen x="0" y="0" width="1920" height="1200" />
     </state>
-    <state x="560" y="340" key="Vcs.Push.Dialog.v2/0.0.1920.1200@0.0.1920.1200" timestamp="1600070139298" />
-    <state x="579" y="398" key="git4idea.merge.GitPullDialog" timestamp="1595207262674">
-      <screen x="0" y="0" width="1920" height="1200" />
-    </state>
-    <state x="579" y="398" key="git4idea.merge.GitPullDialog/0.0.1920.1200@0.0.1920.1200" timestamp="1595207262674" />
+    <state x="560" y="340" key="Vcs.Push.Dialog.v2/0.0.1920.1200@0.0.1920.1200" timestamp="1605776624893" />
   </component>
 </project>
