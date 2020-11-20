@@ -1,10 +1,9 @@
 package errors
 
 import (
+	"encoding/json"
 	"fmt"
 	"strings"
-
-	"github.com/json-iterator/go"
 
 	"go.uber.org/zap"
 )
@@ -25,7 +24,7 @@ func NamedScope(name string) zap.Field {
 
 func ParseError(jsonStr string) Error {
 	err := &baseError{}
-	e := jsoniter.Unmarshal([]byte(jsonStr), err)
+	e := json.Unmarshal([]byte(jsonStr), err)
 	if e != nil {
 		err.Code = ErrorSystemRPC
 		err.Message = fmt.Sprintf("无法解析错误消息[%s],%#v", jsonStr, e)

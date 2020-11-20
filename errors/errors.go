@@ -1,7 +1,8 @@
 package errors
 
 import (
-	"github.com/json-iterator/go"
+	"encoding/json"
+
 	"go.uber.org/zap"
 )
 
@@ -26,8 +27,8 @@ func (err *baseError) Is(err2 Error) bool {
 }
 
 func (err *baseError) FormatRPCError() string {
-	json, _ := jsoniter.MarshalToString(err)
-	return json
+	json, _ := json.Marshal(err)
+	return string(json)
 }
 
 func (err *baseError) Error() string {
@@ -54,7 +55,7 @@ func (err *baseError) GetFieldsWithCause(fields ...zap.Field) []zap.Field {
 // ParseErrorFromJSON 从 Jons数据解析出 Error 对象
 func ParseErrorFromJSON(data []byte) Error {
 	err := &baseError{}
-	e := jsoniter.Unmarshal(data, err)
+	e := json.Unmarshal(data, err)
 	if e != nil {
 		return nil
 	}
@@ -62,6 +63,6 @@ func ParseErrorFromJSON(data []byte) Error {
 }
 
 func ErrorToJson(err Error) string {
-	data, _ := jsoniter.Marshal(err)
+	data, _ := json.Marshal(err)
 	return string(data)
 }
