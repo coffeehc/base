@@ -131,9 +131,10 @@ func (impl *serviceImpl) LoadConfig() {
 			impl.logFileWrite.Compress = fileLogConfig.Compress
 		}
 		impl.logFileWrite.Rotate()
-		core := zapcore.NewCore(zapcore.NewJSONEncoder(newEncodeConfig()), zapcore.AddSync(impl.logFileWrite), impl.level)
+		encoder := zapcore.NewJSONEncoder(newEncodeConfig())
+		core := zapcore.NewCore(encoder, zapcore.AddSync(impl.logFileWrite), impl.level)
 		if conf.EnableSampler {
-			core = zapcore.NewSampler(core, time.Second*5, 100, 10)
+			core = zapcore.NewSamplerWithOptions(core, time.Second*5, 100, 10)
 		}
 		logCores = append(logCores, core)
 	}
@@ -144,7 +145,7 @@ func (impl *serviceImpl) LoadConfig() {
 		}
 		core := zapcore.NewCore(zapcore.NewConsoleEncoder(encodeConfig), zapcore.AddSync(os.Stdout), impl.level)
 		if conf.EnableSampler {
-			core = zapcore.NewSampler(core, time.Second*5, 100, 5)
+			core = zapcore.NewSamplerWithOptions(core, time.Second*5, 100, 5)
 		}
 		logCores = append(logCores, core)
 	}

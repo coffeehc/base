@@ -91,6 +91,6 @@ func DPanic(msg string, fields ...zap.Field) {
 	service.SendLog(zap.DPanicLevel, msg, fields...)
 }
 
-func Fatal(msg string, fields ...zap.Field) {
-	service.SendLog(zap.FatalLevel, msg, fields...)
-}
+// func Fatal(msg string, fields ...zap.Field) {
+// 	service.SendLog(zap.FatalLevel, msg, fields...)
+// }

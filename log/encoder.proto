@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package smsservice.smsservicecommons;
+
+option go_package = "git.xiagaogao.com/coffee/base/log";
+
+message LogBody {
+    int32 level = 1;
+    int64 time = 2;
+    string logger_name = 3;
+    string message = 4;
+    string stack = 5;
+    LogEntryCaller caller = 6;
+    string fields = 7;
+}
+
+message LogEntryCaller {
+    bool defined = 1;
+    //    	PC       uintptr
+    string file = 2;
+    int32 line = 3;
+    string function = 4;
+}
