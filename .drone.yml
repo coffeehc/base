@@ -1,6 +1,6 @@
 kind: pipeline
 type: docker
-name: build
+name: main
 
 platform:
   os: linux
@@ -11,23 +11,23 @@ workspace:
   path: src/git.xiagaogao.com/coffee/base
 
 steps:
-  - name: build
-    image: golang:1.6
-    environment:
-      GOPROXY: https://goproxy.io
-      GOPRIVATE: git.xiagaogao.com
-      GOSUMDB: sum.golang.google.cn
-    commands:
-      - cat /root/.netrc >> ~/.netrc
-      - ln -s /root/.gitconfig ~/.gitconfig
-      - go mod tidy
-    when:
-      branch:
-        include:
-          - feature/*
-          - master
-          - dev
-      event:
-        include:
-          - push
-          - pull_request
+- name: build
+  image: golang:1.6
+  environment:
+    GOPROXY: https://goproxy.io
+    GOPRIVATE: git.xiagaogao.com
+    GOSUMDB: sum.golang.google.cn
+  commands:
+    - cat /root/.netrc >> ~/.netrc
+    - ln -s /root/.gitconfig ~/.gitconfig
+    - go mod tidy
+  when:
+    branch:
+      include:
+        - feature/*
+        - master
+        - dev
+    event:
+      include:
+        - push
+        - pull_request
