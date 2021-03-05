@@ -12,9 +12,10 @@ workspace:
 
 steps:
   - name: build
-    image: golang:1.6
+    image: golang:1.16
     commands:
       - ls -a /data
+      - ls -a /data/drone-go
 #      - cat /data/netrc >> ~/.netrc
 #      - ln -s /data/gitconfig ~/.gitconfig
       - go mod tidy
