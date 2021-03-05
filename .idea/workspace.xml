@@ -19,17 +19,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fa5abe78-f07f-48bf-a5db-ce5dfbc0d297" name="Default Changelist" comment="2020-11-20 v2 去掉jsoniter包">
-      <change afterPath="$PROJECT_DIR$/log/encoder.pb.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/log/encoder.proto" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/log/pb_encoder.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/log/pb_write.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/base.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/base.iml" afterDir="false" />
+    <list default="true" id="fa5abe78-f07f-48bf-a5db-ce5dfbc0d297" name="Default Changelist" comment="2021-02-25 去掉了log.Fail方法，在testcase的时候会导致一场日志不打印，所有fial方法该用painc">
+      <change afterPath="$PROJECT_DIR$/.drone.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/impl.go" beforeDir="false" afterPath="$PROJECT_DIR$/log/impl.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/service.go" beforeDir="false" afterPath="$PROJECT_DIR$/log/service.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,7 +63,7 @@
     <property name="go.sdk.automatically.set" value="true" />
     <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="go.vgo" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -117,7 +109,14 @@
       <option name="project" value="LOCAL" />
       <updated>1605868294900</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="2021-02-25 去掉了log.Fail方法，在testcase的时候会导致一场日志不打印，所有fial方法该用painc">
+      <created>1614245431154</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1614245431154</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -143,7 +142,8 @@
     <MESSAGE value="2020-11-19 v1" />
     <MESSAGE value="2020-11-20 v1" />
     <MESSAGE value="2020-11-20 v2 去掉jsoniter包" />
-    <option name="LAST_COMMIT_MESSAGE" value="2020-11-20 v2 去掉jsoniter包" />
+    <MESSAGE value="2021-02-25 去掉了log.Fail方法，在testcase的时候会导致一场日志不打印，所有fial方法该用painc" />
+    <option name="LAST_COMMIT_MESSAGE" value="2021-02-25 去掉了log.Fail方法，在testcase的时候会导致一场日志不打印，所有fial方法该用painc" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
@@ -154,23 +154,5 @@
       </map>
     </environment>
     <proxy>direct</proxy>
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="406" y="162" key="CommitChangelistDialog2" timestamp="1600070137731">
-      <screen x="0" y="0" width="1920" height="1200" />
-    </state>
-    <state x="406" y="162" key="CommitChangelistDialog2/0.0.1920.1200@0.0.1920.1200" timestamp="1600070137731" />
-    <state x="842" y="476" key="EnvironmentVariablesDialog" timestamp="1605868140706">
-      <screen x="0" y="0" width="1920" height="1200" />
-    </state>
-    <state x="842" y="476" key="EnvironmentVariablesDialog/0.0.1920.1200@0.0.1920.1200" timestamp="1605868140706" />
-    <state x="491" y="250" key="SettingsEditor" timestamp="1605868142988">
-      <screen x="0" y="0" width="1920" height="1200" />
-    </state>
-    <state x="491" y="250" key="SettingsEditor/0.0.1920.1200@0.0.1920.1200" timestamp="1605868142988" />
-    <state x="560" y="340" key="Vcs.Push.Dialog.v2" timestamp="1605868296701">
-      <screen x="0" y="0" width="1920" height="1200" />
-    </state>
-    <state x="560" y="340" key="Vcs.Push.Dialog.v2/0.0.1920.1200@0.0.1920.1200" timestamp="1605868296701" />
   </component>
 </project>

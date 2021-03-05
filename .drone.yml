@@ -1,0 +1,39 @@
+kind: pipeline
+type: exec
+name: build
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  base: /root/drone-go
+  path: src/git.xiagaogao.com/coffee/base
+
+steps:
+  - name: build
+    environment:
+      GOPROXY: https://goproxy.io
+      GOPRIVATE: git.xiagaogao.com
+      GOSUMDB: sum.golang.google.cn
+      USERNAME:
+        from_secret: username
+      PASSWORD:
+        from_secret: password
+    commands:
+      - echo $USERNAME $PASSWORD
+      - export GOROOT=/root/go
+      - export GOPATH=/root/drone-go
+#      - git config --global url."https://$USERNAME:$PASSWORD@git.xiagaogao.com".insteadOf "https://git.xiagaogao.com"
+      - echo "machine git.xiagaogao.com login $USERNAME password $PASSWORD" > ~/.netrc
+      - /root/go/bin/go mod tidy
+    when:
+      branch:
+        include:
+          - feature/*
+          - master
+          - dev
+      event:
+        include:
+          - push
+          - pull_request
