@@ -19,8 +19,8 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fa5abe78-f07f-48bf-a5db-ce5dfbc0d297" name="Default Changelist" comment="2021-02-25 去掉了log.Fail方法，在testcase的时候会导致一场日志不打印，所有fial方法该用painc">
-      <change afterPath="$PROJECT_DIR$/.drone.yml" afterDir="false" />
+    <list default="true" id="fa5abe78-f07f-48bf-a5db-ce5dfbc0d297" name="Default Changelist" comment="2021-03-05 增加drone配置">
+      <change beforePath="$PROJECT_DIR$/.drone.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.drone.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -116,7 +116,14 @@
       <option name="project" value="LOCAL" />
       <updated>1614245431154</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="2021-03-05 增加drone配置">
+      <created>1614911278003</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1614911278003</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -143,7 +150,8 @@
     <MESSAGE value="2020-11-20 v1" />
     <MESSAGE value="2020-11-20 v2 去掉jsoniter包" />
     <MESSAGE value="2021-02-25 去掉了log.Fail方法，在testcase的时候会导致一场日志不打印，所有fial方法该用painc" />
-    <option name="LAST_COMMIT_MESSAGE" value="2021-02-25 去掉了log.Fail方法，在testcase的时候会导致一场日志不打印，所有fial方法该用painc" />
+    <MESSAGE value="2021-03-05 增加drone配置" />
+    <option name="LAST_COMMIT_MESSAGE" value="2021-03-05 增加drone配置" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
