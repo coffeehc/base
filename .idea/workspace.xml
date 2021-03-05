@@ -123,7 +123,14 @@
       <option name="project" value="LOCAL" />
       <updated>1614911278003</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="20210305 drone v1">
+      <created>1614925309934</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1614925309934</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -151,7 +158,8 @@
     <MESSAGE value="2020-11-20 v2 去掉jsoniter包" />
     <MESSAGE value="2021-02-25 去掉了log.Fail方法，在testcase的时候会导致一场日志不打印，所有fial方法该用painc" />
     <MESSAGE value="2021-03-05 增加drone配置" />
-    <option name="LAST_COMMIT_MESSAGE" value="2021-03-05 增加drone配置" />
+    <MESSAGE value="20210305 drone v1" />
+    <option name="LAST_COMMIT_MESSAGE" value="20210305 drone v1" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
