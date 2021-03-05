@@ -7,7 +7,7 @@ platform:
   arch: amd64
 
 workspace:
-  base: /root/drone-go
+  base: /data/drone-go
   path: src/git.xiagaogao.com/coffee/base
 
 steps:
