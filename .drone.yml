@@ -32,4 +32,4 @@ steps:
           - pull_request
   - name: notofy
     commands:
-      - `curl -X POST -H 'Content-type: application/json' --data '{"text":"{{#success build.status}} build {{build.number}} succeeded. Good job. {{else}} build {{build.number}} failed. Fix me please.{{/success}}"}' https://hooks.slack.com/services/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`
+      - 'curl -X POST -H "Content-type: application/json" --data \'{"text":"{{#success build.status}} build {{build.number}} succeeded. Good job. {{else}} build {{build.number}} failed. Fix me please.{{/success}}"}\' https://hooks.slack.com/services/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'
