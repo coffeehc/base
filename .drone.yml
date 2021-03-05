@@ -14,6 +14,7 @@ steps:
   - name: build
     image: golang:1.6
     commands:
+      - ls -a /data
       - cat /data/.netrc >> ~/.netrc
       - ln -s /data/.gitconfig ~/.gitconfig
       - go mod tidy
