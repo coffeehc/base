@@ -22,7 +22,7 @@ steps:
         include:
           - feature/*
           - master
-          - dev
+          - develop
       event:
         include:
           - push
