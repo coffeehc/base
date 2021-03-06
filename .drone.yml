@@ -20,6 +20,9 @@ volumes:
   - name: data
     host:
       path: /data/drone
+  - name: dockersock
+    host:
+      path: /var/run/docker.sock
 
 steps:
   - name: build
@@ -35,7 +38,7 @@ steps:
       - name: data
         path: /data
     commands:
-#      - cat /data/netrc >> ~/.netrc
+      #      - cat /data/netrc >> ~/.netrc
       - ln -s /data/gitconfig ~/.gitconfig
       - go build -v
     when:
