@@ -12,9 +12,17 @@ workspace:
 
 steps:
   - name: build
-    image: golang:1.16
+    image: golang:laster
+    pull: if-not-exists
+    environment:
+      GOPROXY=https://goproxy.io
+      GOPRIVATE=git.xiagaogao.com
+      GOSUMDB=sum.golang.google.cn
     volumes:
-      - '/data/drone:/data'
+      - name: pkgdeps
+        path: /data/drone/drone-go/pkg
+      - name: data
+        path: /data
     commands:
       - ls -a /data
       - ls -a /data/drone-go
