@@ -10,22 +10,29 @@ workspace:
   base: /data/drone-go
   path: src/git.xiagaogao.com/coffee/base
 
+volumes:
+  - name: pkgdeps
+    host:
+      path: /data/drone/gocache/pkg
+  - data: data
+    host:
+      path: /data
+
 steps:
   - name: build
     image: golang:1.16
-    pull: if-not-exists
     environment:
       GOPROXY: https://goproxy.io
       GOPRIVATE: git.xiagaogao.com
       GOSUMDB: sum.golang.google.cn
+      CGO_ENABLED: 0
     volumes:
       - name: pkgdeps
-        path: /data/drone/drone-go/pkg
+        path: /go/pkg
       - name: data
         path: /data
     commands:
       - ls -a /data
-      - ls -a /data/drone-go
       - cat /data/netrc >> ~/.netrc
       - ln -s /data/gitconfig ~/.gitconfig
       - go mod tidy
