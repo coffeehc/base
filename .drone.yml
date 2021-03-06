@@ -14,7 +14,7 @@ steps:
   - name: build
     image: golang:1.16
     volumes:
-      - /data/drone:/data
+      - /data:/data
     commands:
       - ls -a /data
       - ls -a /data/drone-go
