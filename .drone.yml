@@ -15,9 +15,9 @@ steps:
     image: golang:laster
     pull: if-not-exists
     environment:
-      GOPROXY=https://goproxy.io
-      GOPRIVATE=git.xiagaogao.com
-      GOSUMDB=sum.golang.google.cn
+      GOPROXY: https://goproxy.io
+      GOPRIVATE: git.xiagaogao.com
+      GOSUMDB: sum.golang.google.cn
     volumes:
       - name: pkgdeps
         path: /data/drone/drone-go/pkg
@@ -27,7 +27,7 @@ steps:
       - ls -a /data
       - ls -a /data/drone-go
       - cat /data/netrc >> ~/.netrc
-#      - ln -s /data/gitconfig ~/.gitconfig
+      - ln -s /data/gitconfig ~/.gitconfig
       - go mod tidy
     when:
       branch:
