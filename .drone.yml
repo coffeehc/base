@@ -12,7 +12,7 @@ workspace:
 
 steps:
   - name: build
-    image: golang:laster
+    image: golang:1.16
     pull: if-not-exists
     environment:
       GOPROXY: https://goproxy.io
