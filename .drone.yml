@@ -14,7 +14,7 @@ volumes:
   - name: pkgdeps
     host:
       path: /data/drone/gocache/pkg
-  - data: data
+  - name: data
     host:
       path: /data
 
