@@ -16,7 +16,7 @@ volumes:
       path: /data/drone/gocache/pkg
   - name: data
     host:
-      path: /data
+      path: /data/drone
 
 steps:
   - name: build
