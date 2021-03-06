@@ -16,7 +16,7 @@ steps:
     commands:
       - ls -a /data
       - ls -a /data/drone-go
-#      - cat /data/netrc >> ~/.netrc
+      - cat /data/netrc >> ~/.netrc
 #      - ln -s /data/gitconfig ~/.gitconfig
       - go mod tidy
     when:
