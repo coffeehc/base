@@ -10,6 +10,9 @@ workspace:
   base: /data/drone-go
   path: src/git.xiagaogao.com/coffee/base
 
+clone:
+  depth: 10
+
 volumes:
   - name: pkgdeps
     host:
@@ -20,7 +23,7 @@ volumes:
 
 steps:
   - name: build
-    image: golang:1.16
+    image: golang:latest
     environment:
       GOPROXY: https://goproxy.io
       GOPRIVATE: git.xiagaogao.com
@@ -32,10 +35,9 @@ steps:
       - name: data
         path: /data
     commands:
-      - ls -a /data
-      - cat /data/netrc >> ~/.netrc
+#      - cat /data/netrc >> ~/.netrc
       - ln -s /data/gitconfig ~/.gitconfig
-      - go mod tidy
+      - go build -v
     when:
       branch:
         include:
