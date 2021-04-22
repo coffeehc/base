@@ -8,9 +8,9 @@ import (
 	"time"
 	"unicode/utf8"
 
-	"github.com/golang/protobuf/proto"
 	"go.uber.org/zap/buffer"
 	"go.uber.org/zap/zapcore"
+	"google.golang.org/protobuf/proto"
 )
 
 var (
