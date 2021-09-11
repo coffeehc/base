@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package smsservice.smsservicecommons;
+package base.log;
 
-option go_package = "git.xiagaogao.com/coffee/base/log";
+option go_package = "github.com/coffeehc/base/log";
 
 message LogBody {
     int32 level = 1;

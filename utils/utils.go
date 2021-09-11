@@ -5,8 +5,8 @@ import (
 	"net"
 	"os"
 
-	"git.xiagaogao.com/coffee/base/errors"
-	"git.xiagaogao.com/coffee/base/log"
+	"github.com/coffeehc/base/errors"
+	"github.com/coffeehc/base/log"
 	"go.uber.org/zap"
 )
 

@@ -3,8 +3,8 @@ package base
 import (
 	"log"
 
-	"git.xiagaogao.com/coffee/base/errors"
-	"git.xiagaogao.com/coffee/base/utils"
+	"github.com/coffeehc/base/errors"
+	"github.com/coffeehc/base/utils"
 )
 
 var _ errors.Error
