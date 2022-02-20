@@ -3,7 +3,7 @@ package errors
 import (
 	"encoding/json"
 	"fmt"
-	"strings"
+	// "strings"
 
 	"go.uber.org/zap"
 )
@@ -49,8 +49,8 @@ func ConverError(err error) Error {
 	if IsBaseError(err) {
 		return err.(Error)
 	}
-	if strings.HasPrefix(err.Error(), "context ") || strings.HasPrefix(err.Error(), "rpc error:") {
-		return SystemError(err.Error())
-	}
+	// if strings.HasPrefix(err.Error(), "context ") || strings.HasPrefix(err.Error(), "rpc error:") {
+	// 	return SystemError(err.Error())
+	// }
 	return WrappedSystemError(err)
 }

@@ -1,9 +1,12 @@
 package errors
 
+import errors1 "errors"
+
 func BuildError(errorCode int64, message string) Error {
 	return &baseError{
 		Code:    errorCode,
 		Message: message,
+		e:       errors1.New(message),
 	}
 }
 
@@ -19,6 +22,7 @@ func WrappedError(errorCode int64, err error) Error {
 	return &baseError{
 		Code:    errorCode,
 		Message: err.Error(),
+		e:       err,
 	}
 }
 
