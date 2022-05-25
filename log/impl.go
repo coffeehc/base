@@ -22,6 +22,7 @@ type Service interface {
 	ResetLogger(fields ...zap.Field)
 	SendLog(level zapcore.Level, msg string, fields ...zap.Field)
 	LoadConfig()
+	ChangeLevel(level string)
 }
 
 var service = newService()
