@@ -7,10 +7,6 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-func init() {
-	InitLogger(true)
-}
-
 type Config struct {
 	Level         string        `mapstructure:"level,omitempty" json:"level,omitempty"`
 	FileConfig    FileLogConfig `mapstructure:"file_config,omitempty" json:"file_config,omitempty"`
@@ -31,14 +27,15 @@ type FileLogConfig struct {
 // 远程日志存储
 
 func GetService() Service {
-	// if service == nil {
-	//   service = newService()
-	// }
 	return service
 }
 
 func GetLogger() *zap.Logger {
 	return service.GetLogger()
+}
+
+func SetLevel(level string) {
+	service.SetLevel(level)
 }
 
 func InitLogger(force bool) {
@@ -67,7 +64,7 @@ func newEncodeConfig() zapcore.EncoderConfig {
 		EncodeLevel:   zapcore.LowercaseLevelEncoder, // 小写编码器
 		EncodeTime: func(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
 			enc.AppendString(t.In(TimeLocation).Format("2006-01-02T15:04:05.000Z0700"))
-		}, //zapcore.ISO8601TimeEncoder,    // ISO8601 UTC 时间格式
+		}, // zapcore.ISO8601TimeEncoder,    // ISO8601 UTC 时间格式
 		EncodeDuration: zapcore.StringDurationEncoder,
 		EncodeCaller:   zapcore.ShortCallerEncoder, // 径编码器
 	}

@@ -4,6 +4,7 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"encoding/json"
+	"fmt"
 	"os"
 	"strings"
 	"sync"
@@ -16,20 +17,27 @@ import (
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
+func init() {
+	service = newService()
+	service.InitLogger(true)
+}
+
+var DefaultLevel = "info"
+
 type Service interface {
 	GetLogger() *zap.Logger
 	InitLogger(force bool)
 	ResetLogger(fields ...zap.Field)
 	SendLog(level zapcore.Level, msg string, fields ...zap.Field)
 	LoadConfig()
-	ChangeLevel(level string)
+	SetLevel(level string)
 }
 
-var service = newService()
+var service Service
 
 func newService() Service {
 	defaultConfig := &Config{
-		Level: "info",
+		Level: DefaultLevel,
 		FileConfig: FileLogConfig{
 			FileName:   "./logs/service.log",
 			Enable:     false,
@@ -77,7 +85,7 @@ type serviceImpl struct {
 	conf           *Config
 }
 
-func (impl *serviceImpl) ChangeLevel(level string) {
+func (impl *serviceImpl) SetLevel(level string) {
 	var logLevel = zap.InfoLevel
 	switch strings.ToLower(level) {
 	case "debug":
@@ -93,8 +101,11 @@ func (impl *serviceImpl) ChangeLevel(level string) {
 	case "fatal":
 		logLevel = zap.FatalLevel
 	default:
-		logLevel = zap.InfoLevel
+		Warn("无法识别的日志级别", zap.String("level", level))
+		return
 	}
+	// zap.In.Info("设置日志级别", zap.String("level", level))
+	fmt.Println("设置日志级别:" + level)
 	impl.level.SetLevel(logLevel)
 }
 
@@ -112,7 +123,7 @@ func (impl *serviceImpl) LoadConfig() {
 	if configHash == impl.configHash {
 		return
 	}
-	impl.ChangeLevel(conf.Level)
+	impl.SetLevel(conf.Level)
 	logCores := make([]zapcore.Core, 0)
 	fileLogConfig := conf.FileConfig
 	if fileLogConfig.Enable {
@@ -174,13 +185,6 @@ func (impl *serviceImpl) InitLogger(force bool) {
 	defer impl.mutex.Unlock()
 	if !force && impl.rootLogger != nil {
 		return
-	}
-	if !viper.IsSet("logger") {
-		viper.SetDefault("logger", &Config{
-			Level:         "debug",
-			EnableConsole: true,
-			EnableColor:   true,
-		})
 	}
 	//  初始化本地化的日志
 	encodeConfig := newEncodeConfig()
