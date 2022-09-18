@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"io"
 	"os"
 	"strings"
 	"sync"
@@ -31,6 +32,10 @@ type Service interface {
 	SendLog(level zapcore.Level, msg string, fields ...zap.Field)
 	LoadConfig()
 	SetLevel(level string)
+	PrintLog(write io.Writer)
+
+	RegisterAccept(logWrite chan<- []byte) int64
+	UnRegisterAccept(id int64)
 }
 
 var service Service
@@ -63,10 +68,11 @@ func newService() Service {
 	core := zapcore.NewCore(zapcore.NewConsoleEncoder(encodeConfig), zapcore.AddSync(os.Stdout), zap.InfoLevel)
 	rootLogger := zap.New(zapcore.NewTee(core), zap.AddStacktrace(zapcore.DPanicLevel), zap.AddCaller())
 	impl := &serviceImpl{
-		level:        zap.NewAtomicLevel(),
-		logFileWrite: logFileWrite,
-		rootLogger:   rootLogger,
-		conf:         defaultConfig,
+		level:         zap.NewAtomicLevel(),
+		logFileWrite:  logFileWrite,
+		rootLogger:    rootLogger,
+		conf:          defaultConfig,
+		_logWritePipe: new(logWritePipe),
 	}
 	impl.LoadConfig()
 	impl.ResetLogger()
@@ -83,6 +89,19 @@ type serviceImpl struct {
 	configHash     string
 	logFileWrite   *lumberjack.Logger
 	conf           *Config
+	_logWritePipe  *logWritePipe
+}
+
+func (impl *serviceImpl) RegisterAccept(logWrite chan<- []byte) int64 {
+	return impl._logWritePipe.RegisterAccept(logWrite)
+}
+
+func (impl *serviceImpl) UnRegisterAccept(id int64) {
+	impl._logWritePipe.UnRegisterAccept(id)
+}
+
+func (impl *serviceImpl) PrintLog(write io.Writer) {
+
 }
 
 func (impl *serviceImpl) SetLevel(level string) {
@@ -161,6 +180,13 @@ func (impl *serviceImpl) LoadConfig() {
 		}
 		logCores = append(logCores, core)
 	}
+	encodeConfig := newEncodeConfig()
+	encodeConfig.EncodeLevel = zapcore.CapitalLevelEncoder
+	core := zapcore.NewCore(zapcore.NewConsoleEncoder(encodeConfig), zapcore.AddSync(impl._logWritePipe), impl.level)
+	if conf.EnableSampler {
+		core = zapcore.NewSamplerWithOptions(core, time.Second*5, 100, 5)
+	}
+	logCores = append(logCores, core)
 	impl.rootLogger.Sync()
 	impl.rootLogger = zap.New(zapcore.NewTee(logCores...), zap.AddStacktrace(zapcore.DPanicLevel), zap.AddCaller())
 	zap.ReplaceGlobals(impl.rootLogger)
