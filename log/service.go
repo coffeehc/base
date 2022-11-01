@@ -63,7 +63,7 @@ func newEncodeConfig() zapcore.EncoderConfig {
 		LineEnding:    zapcore.DefaultLineEnding,
 		EncodeLevel:   zapcore.LowercaseLevelEncoder, // 小写编码器
 		EncodeTime: func(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
-			enc.AppendString(t.In(TimeLocation).Format("2006-01-02T15:04:05.000Z0700"))
+			enc.AppendString(t.In(TimeLocation).Format("2006-01-02T15:04:05.000"))
 		}, // zapcore.ISO8601TimeEncoder,    // ISO8601 UTC 时间格式
 		EncodeDuration: zapcore.StringDurationEncoder,
 		EncodeCaller:   zapcore.ShortCallerEncoder, // 径编码器

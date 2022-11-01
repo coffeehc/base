@@ -172,7 +172,8 @@ func (impl *serviceImpl) LoadConfig() {
 	if conf.EnableConsole {
 		encodeConfig := newEncodeConfig()
 		if conf.EnableColor {
-			encodeConfig.EncodeLevel = zapcore.LowercaseColorLevelEncoder
+			//encodeConfig.EncodeLevel = zapcore.LowercaseColorLevelEncoder
+			encodeConfig.EncodeLevel = zapcore.CapitalLevelEncoder
 		}
 		core := zapcore.NewCore(zapcore.NewConsoleEncoder(encodeConfig), zapcore.AddSync(os.Stdout), impl.level)
 		if conf.EnableSampler {
