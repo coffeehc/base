@@ -3,6 +3,7 @@ package log
 import (
 	"encoding/base64"
 	"encoding/json"
+	"github.com/gogo/protobuf/proto"
 	"math"
 	"sync"
 	"time"
@@ -10,7 +11,6 @@ import (
 
 	"go.uber.org/zap/buffer"
 	"go.uber.org/zap/zapcore"
-	"google.golang.org/protobuf/proto"
 )
 
 var (
