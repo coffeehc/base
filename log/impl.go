@@ -4,7 +4,6 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"encoding/json"
-	"fmt"
 	"io"
 	"os"
 	"strings"
@@ -124,7 +123,7 @@ func (impl *serviceImpl) SetLevel(level string) {
 		return
 	}
 	// zap.In.Info("设置日志级别", zap.String("level", level))
-	fmt.Println("设置日志级别:" + level)
+	//fmt.Println("设置日志级别:" + level)
 	impl.level.SetLevel(logLevel)
 }
 

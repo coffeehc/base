@@ -18,6 +18,10 @@ func MessageError(message string) Error {
 	return BuildError(ErrorMessage, message)
 }
 
+func NotFountError(message string) Error {
+	return BuildError(ErrorMessageNotFount, message)
+}
+
 func WrappedError(errorCode int64, err error) Error {
 	return &baseError{
 		Code:    errorCode,
