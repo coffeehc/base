@@ -3,7 +3,7 @@ package log
 import (
 	"encoding/base64"
 	"encoding/json"
-	"github.com/gogo/protobuf/proto"
+	"google.golang.org/protobuf/proto"
 	"math"
 	"sync"
 	"time"
