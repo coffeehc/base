@@ -17,6 +17,13 @@ import (
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
+var disableLog = false
+
+func SetDisableLog(disable bool) {
+	service.SetLevel("fatal")
+	disableLog = disable
+}
+
 func init() {
 	service = newService()
 	service.InitLogger(true)
@@ -141,6 +148,9 @@ func (impl *serviceImpl) LoadConfig() {
 	if configHash == impl.configHash {
 		return
 	}
+	if disableLog {
+		conf.Level = "fatal"
+	}
 	impl.SetLevel(conf.Level)
 	logCores := make([]zapcore.Core, 0)
 	fileLogConfig := conf.FileConfig
@@ -195,6 +205,9 @@ func (impl *serviceImpl) LoadConfig() {
 }
 
 func (impl *serviceImpl) SendLog(level zapcore.Level, msg string, fields ...zap.Field) {
+	if disableLog {
+		return
+	}
 	if ce := impl.internalLogger.Check(level, msg); ce != nil {
 		ce.Write(fields...)
 	}
