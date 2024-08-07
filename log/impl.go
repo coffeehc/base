@@ -17,6 +17,7 @@ import (
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
+var HiddenCall = false
 var disableLog = false
 
 func SetDisableLog(disable bool) {

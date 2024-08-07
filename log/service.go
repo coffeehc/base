@@ -53,13 +53,19 @@ func LoadConfig() {
 var TimeLocation = time.FixedZone("CST", 8*3600)
 
 func newEncodeConfig() zapcore.EncoderConfig {
+	callerKey := "caller"
+	stacktraceKey := "stacktrace"
+	if HiddenCall {
+		callerKey = ""
+		stacktraceKey = ""
+	}
 	return zapcore.EncoderConfig{
 		TimeKey:       "time",
 		LevelKey:      "level",
 		NameKey:       "logger",
-		CallerKey:     "caller",
+		CallerKey:     callerKey,
 		MessageKey:    "msg",
-		StacktraceKey: "stacktrace",
+		StacktraceKey: stacktraceKey,
 		LineEnding:    zapcore.DefaultLineEnding,
 		EncodeLevel:   zapcore.LowercaseLevelEncoder, // 小写编码器
 		EncodeTime: func(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
