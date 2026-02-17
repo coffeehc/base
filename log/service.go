@@ -1,6 +1,7 @@
 package log
 
 import (
+	"io"
 	"time"
 
 	"go.uber.org/zap"
@@ -48,6 +49,49 @@ func ResetLogger(fields ...zap.Field) {
 
 func LoadConfig() {
 	service.LoadConfig()
+}
+
+func RegisterAccept(logWrite chan<- []byte) int64 {
+	return service.RegisterAccept(logWrite)
+}
+
+func UnRegisterAccept(id int64) {
+	service.UnRegisterAccept(id)
+}
+
+func PrintLog(write io.Writer) {
+	service.PrintLog(write)
+}
+
+func GetRecentLogs(limit int) [][]byte {
+	impl, ok := service.(*serviceImpl)
+	if !ok {
+		return nil
+	}
+	return impl.GetRecentLogs(limit)
+}
+
+// SubscribeLogs 返回旁路日志通道，cancel 只做注销，不会 close 通道。
+func SubscribeLogs(bufferSize int, replay int) (<-chan []byte, func()) {
+	if bufferSize <= 0 {
+		bufferSize = 128
+	}
+	ch := make(chan []byte, bufferSize)
+	id := RegisterAccept(ch)
+	if replay > 0 {
+		// 先回放最近日志，便于调试端接入后立即看到上下文。
+		for _, line := range GetRecentLogs(replay) {
+			select {
+			case ch <- line:
+			default:
+				// 旁路消费慢时不阻塞主链路，直接丢弃回放数据。
+			}
+		}
+	}
+	cancel := func() {
+		UnRegisterAccept(id)
+	}
+	return ch, cancel
 }
 
 var TimeLocation = time.FixedZone("CST", 8*3600)
@@ -98,6 +142,10 @@ func Panic(msg string, fields ...zap.Field) {
 
 func DPanic(msg string, fields ...zap.Field) {
 	service.SendLog(zap.DPanicLevel, msg, fields...)
+}
+
+func SendLog(level zapcore.Level, msg string, fields ...zap.Field) {
+	service.SendLog(level, msg, fields...)
 }
 
 // func Fatal(msg string, fields ...zap.Field) {

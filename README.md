@@ -84,6 +84,10 @@ writeChan := make(chan []byte)
 id := log.RegisterAccept(writeChan)
 // ... 使用 writeChan 发送日志
 log.UnRegisterAccept(id)
+
+// 拉取最近日志（用于调试旁路）
+recent := log.GetRecentLogs(100)
+_ = recent
 ```
 
 ### 工具函数
@@ -233,6 +237,13 @@ id := log.RegisterAccept(writeChan chan<- []byte)
 
 // 注销日志接收通道
 log.UnRegisterAccept(id)
+
+// 订阅旁路日志（cancel 只注销，不关闭通道）
+ch, cancel := log.SubscribeLogs(128, 50)
+defer cancel()
+
+// 拉取最近 N 条日志
+recent := log.GetRecentLogs(100)
 
 // 获取 slog 兼容的日志器
 slogLogger := log.GetSlog()

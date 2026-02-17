@@ -79,7 +79,7 @@ func newService() Service {
 		logFileWrite:  logFileWrite,
 		rootLogger:    rootLogger,
 		conf:          defaultConfig,
-		_logWritePipe: new(logWritePipe),
+		_logWritePipe: newLogWritePipe(defaultLogHistoryCap),
 	}
 	impl.LoadConfig()
 	impl.ResetLogger()
@@ -108,7 +108,17 @@ func (impl *serviceImpl) UnRegisterAccept(id int64) {
 }
 
 func (impl *serviceImpl) PrintLog(write io.Writer) {
+	if write == nil {
+		return
+	}
+	// 输出当前缓存的调试旁路日志快照，不持续订阅。
+	for _, line := range impl.GetRecentLogs(0) {
+		_, _ = write.Write(line)
+	}
+}
 
+func (impl *serviceImpl) GetRecentLogs(limit int) [][]byte {
+	return impl._logWritePipe.GetRecentLogs(limit)
 }
 
 func (impl *serviceImpl) SetLevel(level string) {
@@ -118,9 +128,11 @@ func (impl *serviceImpl) SetLevel(level string) {
 		logLevel = zap.DebugLevel
 	case "info":
 		logLevel = zap.InfoLevel
+	case "warn":
+		logLevel = zap.WarnLevel
 	case "error":
 		logLevel = zap.ErrorLevel
-	case "dPanic":
+	case "dpanic":
 		logLevel = zap.DPanicLevel
 	case "panic":
 		logLevel = zap.PanicLevel
