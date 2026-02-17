@@ -2,6 +2,8 @@ package log
 
 import (
 	"io"
+	"strings"
+	"sync"
 	"time"
 
 	"go.uber.org/zap"
@@ -73,25 +75,98 @@ func GetRecentLogs(limit int) [][]byte {
 
 // SubscribeLogs 返回旁路日志通道，cancel 只做注销，不会 close 通道。
 func SubscribeLogs(bufferSize int, replay int) (<-chan []byte, func()) {
+	return SubscribeLogsWithLevel(bufferSize, replay, "")
+}
+
+// SubscribeLogsWithLevel 支持按最小级别过滤旁路日志，level 为空表示不过滤。
+func SubscribeLogsWithLevel(bufferSize int, replay int, level string) (<-chan []byte, func()) {
 	if bufferSize <= 0 {
 		bufferSize = 128
 	}
-	ch := make(chan []byte, bufferSize)
-	id := RegisterAccept(ch)
+	minLevel, hasLevel := parseMinLevel(level)
+	rawCh := make(chan []byte, bufferSize)
+	out := make(chan []byte, bufferSize)
+	id := RegisterAccept(rawCh)
+	stopCh := make(chan struct{})
+	var once sync.Once
+	go func() {
+		defer close(out)
+		for {
+			select {
+			case <-stopCh:
+				return
+			case line := <-rawCh:
+				if shouldPassByLevel(line, minLevel, hasLevel) {
+					select {
+					case out <- line:
+					default:
+					}
+				}
+			}
+		}
+	}()
 	if replay > 0 {
 		// 先回放最近日志，便于调试端接入后立即看到上下文。
 		for _, line := range GetRecentLogs(replay) {
+			if !shouldPassByLevel(line, minLevel, hasLevel) {
+				continue
+			}
 			select {
-			case ch <- line:
+			case out <- line:
 			default:
 				// 旁路消费慢时不阻塞主链路，直接丢弃回放数据。
 			}
 		}
 	}
 	cancel := func() {
-		UnRegisterAccept(id)
+		once.Do(func() {
+			UnRegisterAccept(id)
+			close(stopCh)
+		})
 	}
-	return ch, cancel
+	return out, cancel
+}
+
+func parseMinLevel(level string) (zapcore.Level, bool) {
+	switch strings.ToLower(strings.TrimSpace(level)) {
+	case "":
+		return zapcore.InfoLevel, false
+	case "debug":
+		return zapcore.DebugLevel, true
+	case "info":
+		return zapcore.InfoLevel, true
+	case "warn", "warning":
+		return zapcore.WarnLevel, true
+	case "error":
+		return zapcore.ErrorLevel, true
+	case "dpanic":
+		return zapcore.DPanicLevel, true
+	case "panic":
+		return zapcore.PanicLevel, true
+	case "fatal":
+		return zapcore.FatalLevel, true
+	default:
+		return zapcore.InfoLevel, false
+	}
+}
+
+func shouldPassByLevel(line []byte, minLevel zapcore.Level, hasLevel bool) bool {
+	if !hasLevel {
+		return true
+	}
+	lvl, ok := parseLevelFromConsoleLine(line)
+	if !ok {
+		return true
+	}
+	return lvl >= minLevel
+}
+
+func parseLevelFromConsoleLine(line []byte) (zapcore.Level, bool) {
+	parts := strings.SplitN(strings.TrimSpace(string(line)), "\t", 4)
+	if len(parts) < 2 {
+		return zapcore.InfoLevel, false
+	}
+	return parseMinLevel(parts[1])
 }
 
 var TimeLocation = time.FixedZone("CST", 8*3600)

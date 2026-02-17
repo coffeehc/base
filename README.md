@@ -242,6 +242,10 @@ log.UnRegisterAccept(id)
 ch, cancel := log.SubscribeLogs(128, 50)
 defer cancel()
 
+// 按最小级别订阅旁路日志（debug/info/warn/error...）
+ch2, cancel2 := log.SubscribeLogsWithLevel(128, 50, "error")
+defer cancel2()
+
 // 拉取最近 N 条日志
 recent := log.GetRecentLogs(100)
 
