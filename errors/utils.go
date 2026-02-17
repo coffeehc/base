@@ -2,6 +2,7 @@ package errors
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	// "strings"
 
@@ -53,4 +54,8 @@ func ConverError(err error) Error {
 	// 	return SystemError(err.Error())
 	// }
 	return WrappedSystemError(err)
+}
+
+func As(err error, target interface{}) bool {
+	return errors.As(err, target)
 }
